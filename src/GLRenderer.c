@@ -1,58 +1,13 @@
-#include "MAGWindow.h"
+#include "GLRenderer.h"
+#include "glad/glad.h"
 #include "stdio.h"
 
-int CreateContext(MAGWindow* wnd)
-{
-    PIXELFORMATDESCRIPTOR pfd = 
-    {
-        sizeof(PIXELFORMATDESCRIPTOR),
-        1, 
-        PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,
-        PFD_TYPE_RGBA,
-        32,
-        0, 0, 0, 0, 0, 0,
-        0,
-        0,
-        0,
-        0, 0, 0, 0,
-        24,
-        8,
-        0,
-        PFD_MAIN_PLANE,
-        0,
-        0, 0, 0
-    };
-
-    HDC deviceContext = GetDC(wnd->hwnd);
-    int pixelFormat = ChoosePixelFormat(deviceContext, &pfd);
-    SetPixelFormat(deviceContext, pixelFormat, &pfd);
-
-    HGLRC renderingContext = wglCreateContext(deviceContext);
-    wglMakeCurrent(deviceContext, renderingContext);
-
-
-    if(!gladLoadGL())
-    {
-        printf("Failed to load OpenGL");
-        return 1;
-    }
-
-    wnd->dc = deviceContext;
-
-    const char* version = glGetString(GL_VERSION);
-    printf("OpenGL Version: %s", version);
-    glViewport(0, 0, 640, 400);
-    glClearColor(0.0, 0.0, 0.0, 0.0);
-
-    return 0;
-}
-
-void DrawScene(MAGWindow* wnd)
+void DrawScene()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-    SwapBuffers(wnd->dc);
 }
 
+/*
 int glCheckError()
 {
     GLenum error = glGetError();
@@ -76,3 +31,4 @@ int glCheckError()
 
     return result;
 }
+*/

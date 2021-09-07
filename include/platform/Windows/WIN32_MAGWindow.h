@@ -12,6 +12,7 @@ typedef struct MAGWindow
 } MAGWindow;
 
 MAGWindow* MAGCreateWindow();
-int MAGPollEvents();
+int MAGPollEvents(MAGWindow* wnd);
+int CreateContext(MAGWindow* wnd);
 
 #endif

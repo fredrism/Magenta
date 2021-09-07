@@ -11,10 +11,11 @@ int main()
     }
 
     CreateContext(window);
-
-    while(MAGPollEvents() > 0)
+    printf("Hello");
+    while(MAGPollEvents(window) > 0)
     {
-        DrawScene(window);
+        DrawScene();
+        MAGSwapBuffers(window);
     }
 
     return 0;

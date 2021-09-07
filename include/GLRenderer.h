@@ -1,7 +1,8 @@
-#ifndef GLRenderer_H
+#ifdef GLRenderer_H
 #define GLRenderer_H
-#include "MAGWindow.h"
 
-int CreateContext(MAGWindow* wnd);
+//#include "glad/glad.h"
+
+void DrawScene();
 
 #endif

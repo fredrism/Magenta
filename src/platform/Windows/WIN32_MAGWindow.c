@@ -1,4 +1,4 @@
-#include "MAGWindow.h"
+#include "WIN32_MAGWindow.h"
 #include "stdio.h"
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -55,11 +55,59 @@ MAGWindow* MAGCreateWindow()
     return magWnd;
 }
 
-int MAGPollEvents()
+int CreateContext(MAGWindow* wnd)
+{
+    PIXELFORMATDESCRIPTOR pfd = 
+    {
+        sizeof(PIXELFORMATDESCRIPTOR),
+        1, 
+        PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,
+        PFD_TYPE_RGBA,
+        32,
+        0, 0, 0, 0, 0, 0,
+        0,
+        0,
+        0,
+        0, 0, 0, 0,
+        24,
+        8,
+        0,
+        PFD_MAIN_PLANE,
+        0,
+        0, 0, 0
+    };
+
+    HDC deviceContext = GetDC(wnd->hwnd);
+    int pixelFormat = ChoosePixelFormat(deviceContext, &pfd);
+    SetPixelFormat(deviceContext, pixelFormat, &pfd);
+
+    HGLRC renderingContext = wglCreateContext(deviceContext);
+    wglMakeCurrent(deviceContext, renderingContext);
+
+
+    if(!gladLoadGL())
+    {
+        printf("Failed to load OpenGL");
+        return 1;
+    }
+
+    wnd->dc = deviceContext;
+    
+    glViewport(0, 0, 640, 400);
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+    return 0;
+}
+
+int MAGPollEvents(MAGWindow* wnd)
 {
     MSG msg;
     int close = GetMessage(&msg, NULL, 0, 0);
     TranslateMessage(&msg);
     DispatchMessage(&msg);
     return close;
+}
+
+void MAGSwapBuffers(MAGWindow* wnd)
+{
+    SwapBuffers(wnd->dc);
 }
