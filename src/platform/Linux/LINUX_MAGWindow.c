@@ -51,7 +51,7 @@ int CreateContext(MAGWindow* wnd)
     gladLoadGL();
     XGetWindowAttributes(wnd->dpy, wnd->win, &wnd->gwa);
     glViewport(0, 0, 640, 400);
-    glClearColor(1.0, 0.0, 0.0, 0.0);
+    glClearColor(0.1, 0.1, 0.1, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
     return 0;
 }

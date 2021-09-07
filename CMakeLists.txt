@@ -27,7 +27,7 @@ if(WIN32)
     target_link_libraries(Magenta PUBLIC OpenGL32)
 endif(WIN32)
 if(UNIX)
-    target_link_libraries(Magenta PUBLIC "-lX11 -lGL -lGLU" ${CMAKE_DL_LIBS} )
+    target_link_libraries(Magenta PUBLIC "-lX11 -lGL -lm" ${CMAKE_DL_LIBS} )
 endif(UNIX)
 
 target_link_libraries(Demo PUBLIC Magenta)

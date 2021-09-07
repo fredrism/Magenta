@@ -11,7 +11,7 @@ unsigned char temp_bitmap[512 * 512];
 
 void InitFont()
 {
-    fread(ttf_buffer, 1, 1<<20, fopen("c:/windows/fonts/times.ttf", "rb"));
+    fread(ttf_buffer, 1, 1<<20, fopen("/media/fredrik/E278FC5878FC2D43/dev/Magenta/build/fonts/Official.ttf", "rb"));
     stbtt_BakeFontBitmap(ttf_buffer, 0, 32.0, temp_bitmap, 512, 512, 32, 96, cdata);
     glGenTextures(1, &ftex);
     glBindTexture(GL_TEXTURE_2D, ftex);
