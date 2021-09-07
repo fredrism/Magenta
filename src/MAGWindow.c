@@ -34,7 +34,7 @@ MAGWindow* MAGCreateWindow()
 
     RegisterClass(&wc);
 
-    HWND hwnd = CreateWindow(CLASS_NAME, WINDOW_NAME, 0, 
+    HWND hwnd = CreateWindow(CLASS_NAME, WINDOW_NAME, WS_OVERLAPPEDWINDOW, 
         CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, hInstance, NULL);
 
     if(hwnd == NULL)
