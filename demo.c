@@ -11,10 +11,12 @@ int main()
     }
 
     CreateContext(window);
-    printf("Hello");
+    InitFont();
+
     while(MAGPollEvents(window) > 0)
     {
         DrawScene();
+        DrawText(-100, 10, "Well well, well, hello there chap! we're going hard");
         MAGSwapBuffers(window);
     }
 

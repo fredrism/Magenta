@@ -94,7 +94,7 @@ int CreateContext(MAGWindow* wnd)
     wnd->dc = deviceContext;
     
     glViewport(0, 0, 640, 400);
-    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glClearColor(0.15, 0.1, 0.1, 0.0);
     return 0;
 }
 
