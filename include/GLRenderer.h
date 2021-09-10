@@ -4,5 +4,5 @@
 //#include "glad/glad.h"
 
 void DrawScene();
-
+unsigned int CreateMaterial();
 #endif

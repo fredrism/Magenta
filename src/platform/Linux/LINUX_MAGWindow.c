@@ -2,6 +2,7 @@
 #include "glad/glad.h"
 #include "stdio.h"
 #include "stdlib.h"
+#include "GLRenderer.h"
 
 MAGWindow* MAGCreateWindow()
 {
@@ -30,9 +31,9 @@ MAGWindow* MAGCreateWindow()
     window->cmap = XCreateColormap(window->dpy, window->root, window->vi->visual, AllocNone);
 
     window->swa.colormap = window->cmap;
-    window->swa.event_mask = ExposureMask | KeyPressMask;
+    window->swa.event_mask = ExposureMask | KeyPressMask | StructureNotifyMask;
 
-    window->win = XCreateWindow(window->dpy, window->root, 0, 0, 640, 400, 0, window->vi->depth, InputOutput, window->vi->visual, CWColormap | CWEventMask, &window->swa);
+    window->win = XCreateWindow(window->dpy, window->root, 0, 0, 1280, 800, 0, window->vi->depth, InputOutput, window->vi->visual, CWColormap | CWEventMask, &window->swa);
     XMapWindow(window->dpy, window->win);
     XStoreName(window->dpy, window->win, "Magenta Window");
     
@@ -50,7 +51,7 @@ int CreateContext(MAGWindow* wnd)
     glXMakeCurrent(wnd->dpy, wnd->win, wnd->glc);
     gladLoadGL();
     XGetWindowAttributes(wnd->dpy, wnd->win, &wnd->gwa);
-    glViewport(0, 0, 640, 400);
+    glViewport(0, 0, 1280, 800);
     glClearColor(0.1, 0.1, 0.1, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
     return 0;
@@ -66,6 +67,16 @@ int MAGPollEvents(MAGWindow* wnd)
         {
             return 0;
         }
+    }
+
+    if(event.type == ConfigureNotify)
+    {
+        unsigned int width = (unsigned int)event.xconfigure.width;
+        unsigned int height = (unsigned int)event.xconfigure.height;
+
+        printf("RESIZE: %d, %d \n", width, height);
+        glViewport(0 ,0, width, height);
+        glClear(GL_COLOR_BUFFER_BIT);
     }
 
     return 1;

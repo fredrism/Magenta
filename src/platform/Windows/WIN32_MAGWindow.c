@@ -1,5 +1,53 @@
 #include "WIN32_MAGWindow.h"
+#include "GLRenderer.h"
 #include "stdio.h"
+
+int initialized = 0;
+
+void OnResize(unsigned int width, unsigned int height)
+{
+    printf("RESIZED: %d, %d \n", width, height);
+    if(initialized)
+    {
+        glViewport(0, 0, width, height);
+    }
+}
+
+unsigned int shaderProgram;
+float cameraX = 0;
+float cameraY = 0;
+float cameraZ = 1;
+
+void OnKeyDown(unsigned int keyCode)
+{
+    switch (keyCode)
+    {
+        case VK_LEFT:
+            cameraX -= 0.01;
+            break;
+        case VK_RIGHT:
+            cameraX += 0.01;
+            break;
+        case VK_UP:
+            cameraY += 0.01;
+            break;
+        case VK_DOWN:
+            cameraY -= 0.01;
+            break;
+        case VK_SPACE:
+            cameraZ += 0.01;
+            break;
+        case VK_CONTROL:
+            cameraZ -= 0.01;
+            break;
+    }
+
+    if (initialized)
+    {
+		int posLocation = glGetUniformLocation(shaderProgram, "cpos");
+		glUniform3f(posLocation, cameraX, cameraY, cameraZ);
+    }
+}
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -8,6 +56,14 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         case WM_DESTROY:
             PostQuitMessage(0);
         
+        case WM_SIZE:
+            UINT width = LOWORD(lParam);
+            UINT height = HIWORD(lParam);
+            OnResize(width, height);
+
+        case WM_KEYDOWN:
+            OnKeyDown(wParam);
+
         default:
             return DefWindowProc(hwnd, uMsg, wParam, lParam);
     }
@@ -47,6 +103,8 @@ MAGWindow* MAGCreateWindow()
         printf(messageBuffer);
         return NULL;
     }
+
+    //SetWindowLong(hwnd, GWL_STYLE, WS_CHILD);
 
     MAGWindow* magWnd = malloc(sizeof(MAGWindow));
     magWnd->hwnd = hwnd;
@@ -93,8 +151,20 @@ int CreateContext(MAGWindow* wnd)
 
     wnd->dc = deviceContext;
     
-    glViewport(0, 0, 640, 400);
+    unsigned int l = 0, t = 0, w = 640, h = 400;
+    RECT rect;
+    if (GetWindowRect(wnd->hwnd, &rect))
+    {
+        l = rect.left;
+        t = rect.top;
+        w = rect.right - rect.left;
+        h = rect.bottom - rect.top;
+    }
+
+    glViewport(0, 0, w, h);
     glClearColor(0.15, 0.1, 0.1, 0.0);
+    initialized = 1;
+    shaderProgram = CreateMaterial();
     return 0;
 }
 
