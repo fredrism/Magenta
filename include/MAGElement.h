@@ -1,5 +1,6 @@
 #ifndef MAGElement_H
 #define MAGElement_H
+#include "MAGVector.h"
 
 typedef struct MAGElementBuffer
 {
@@ -10,16 +11,6 @@ typedef struct MAGElementBuffer
     int border_begin;
 
 } MAGElementBuffer;
-
-typedef struct MAGColor
-{
-    float r;
-    float g;
-    float b;
-    float a;
-} MAGColor;
-
-void SetColor(MAGColor* color, float r, float g, float b, float a);
 
 typedef struct MAGStyle
 {
@@ -34,20 +25,6 @@ typedef struct MAGStyle
 
 } MAGStyle;
 
-typedef struct MAGVector
-{
-    float x;
-    float y;
-    float z;
-} MAGVector;
-
-typedef struct MAGTriangle
-{
-    unsigned int a;
-    unsigned int b;
-    unsigned int c;
-} MAGTriangle;
-
 typedef struct ElemVertexArrayDesc
 {
     int num_vertices;
@@ -60,10 +37,10 @@ typedef struct ElemVertexArrayDesc
 
 typedef struct MAGElement
 {
-    float top;
-    float left;
-    float width;
-    float height;
+    unsigned int top;
+    unsigned int left;
+    unsigned int width;
+    unsigned int height;
     unsigned int program;
 
     MAGStyle* style;

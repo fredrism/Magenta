@@ -1,19 +1,25 @@
 #include "WIN32_MAGWindow.h"
 #include "GLRenderer.h"
 #include "stdio.h"
+#include "cglm/cglm.h"
 
 int initialized = 0;
+unsigned int shaderProgram;
 
 void OnResize(unsigned int width, unsigned int height)
 {
     printf("RESIZED: %d, %d \n", width, height);
     if(initialized)
     {
+        mat4 mat;
+        //glm_mat4_identity(mat);
+        glm_ortho(0,width, height, 0, 0, 1, mat);
+        unsigned int loc = glGetUniformLocation(shaderProgram, "mat");
+        glUniformMatrix4fv(loc, 1, GL_FALSE, mat);
         glViewport(0, 0, width, height);
     }
 }
 
-unsigned int shaderProgram;
 float cameraX = 0;
 float cameraY = 0;
 float cameraZ = 1;
@@ -40,12 +46,6 @@ void OnKeyDown(unsigned int keyCode)
         case VK_CONTROL:
             cameraZ -= 0.01;
             break;
-    }
-
-    if (initialized)
-    {
-		int posLocation = glGetUniformLocation(shaderProgram, "cpos");
-		glUniform3f(posLocation, cameraX, cameraY, cameraZ);
     }
 }
 

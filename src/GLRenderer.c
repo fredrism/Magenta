@@ -5,10 +5,11 @@
 
 const char *vertexShaderSource = "#version 330 core\n"
     "layout (location = 0) in vec3 aPos;\n"
-    "uniform vec3 cpos = vec3(0.0, 0.0, 1.0);\n"
+    "uniform mat4 mat;"
     "void main()\n"
     "{\n"
-    "   gl_Position = vec4(aPos.x - cpos.x, aPos.y - cpos.y, aPos.z, 1.0)/cpos.z;\n"
+    "   vec4 pos = mat * vec4(aPos.x, aPos.y, aPos.z, 1.0); \n"
+    "   gl_Position = pos/pos.w;\n"
     "}\0";
 const char *fragmentShaderSource = "#version 330 core\n"
     "out vec4 FragColor;\n"
@@ -22,7 +23,6 @@ const char *fragmentShaderSource = "#version 330 core\n"
 void DrawElement(MAGElement* elem)
 {
     glClear(GL_COLOR_BUFFER_BIT);
-    //glEnable(GL_CULL_FACE);
 
 	int color_pos = glGetUniformLocation(elem->program, "color");
 	glUniform4f(color_pos, elem->style->border_color.r, elem->style->border_color.g, elem->style->border_color.b, elem->style->border_color.a);

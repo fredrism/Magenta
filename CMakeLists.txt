@@ -21,7 +21,7 @@ add_executable(Demo "demo.c")
 add_library(Magenta STATIC ${SOURCES} ${PLATFORM_SOURCE})
 
 target_include_directories(Demo PUBLIC include)
-target_include_directories(Magenta PUBLIC include PRIVATE glad/include stb ${PLATFORM_INCLUDE})
+target_include_directories(Magenta PUBLIC include cglm/include PRIVATE glad/include stb ${PLATFORM_INCLUDE})
 
 if(WIN32)
     target_link_libraries(Magenta PUBLIC OpenGL32)
